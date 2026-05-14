@@ -1,0 +1,278 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<title>StudyHelper</title>
+
+<style>
+/* ===== ОСНОВНОЙ ДИЗАЙН ===== */
+body {
+  font-family: Arial;
+  background: linear-gradient(to right, #74ebd5, #ACB6E5);
+  text-align: center;
+  margin: 0;
+}
+
+.container {
+  background: white;
+  padding: 20px;
+  margin: 30px auto;
+  width: 80%;
+  border-radius: 15px;
+  box-shadow: 0 0 15px rgba(0,0,0,0.2);
+}
+
+/* Кнопки */
+button {
+  padding: 10px 20px;
+  margin: 10px;
+  background: #4CAF50;
+  color: white;
+  border: none;
+  cursor: pointer;
+  border-radius: 8px;
+}
+
+button:hover {
+  background: #45a049;
+}
+
+/* Поле выбора */
+select, input {
+  padding: 10px;
+  margin: 10px;
+}
+
+/* Вопрос */
+.question {
+  font-size: 18px;
+  margin: 15px;
+}
+</style>
+</head>
+
+<body>
+
+<h1>📚 StudyHelper </h1>
+<p>Учись эффективно и готовься к экзаменам</p>
+
+<div class="container">
+
+  <!-- ВЫБОР ТЕМЫ -->
+  <h2>Выбери тему</h2>
+  <select id="topic">
+    <option value="math">Квадратные уравнения</option>
+    <option value="bio">Фотосинтез</option>
+    <option value="history">История Казахстана</option>
+  </select>
+
+  <br>
+
+  <!-- КНОПКИ -->
+  <button onclick="showTheory()">📘 Теория</button>
+  <button onclick="startTest()">📝 Тест</button>
+  <button onclick="makePlan()">📅 План подготовки</button>
+
+  <!-- ВЫВОД -->
+  <div id="output"></div>
+
+</div>
+
+<script>
+
+/* ===== ГЛОБАЛЬНЫЕ ПЕРЕМЕННЫЕ ===== */
+let questions = []; // массив вопросов
+let current = 0;    // текущий вопрос
+let score = 0;      // очки
+
+/* ===== ФУНКЦИЯ ТЕОРИИ ===== */
+function showTheory() {
+
+  // получаем выбранную тему
+  let topic = document.getElementById("topic").value;
+  let text = "";
+
+  // МАТЕМАТИКА
+  if (topic === "math") {
+    text =
+    "Квадратное уравнение — это уравнение вида ax² + bx + c = 0.\n\n" +
+    "Где:\n a, b, c — числа\n x — переменная\n\n" +
+    "Решение:\n" +
+    "1. Находим дискриминант: D = b² - 4ac\n" +
+    "2. Если D > 0 → 2 корня\n" +
+    "3. Если D = 0 → 1 корень\n" +
+    "4. Если D < 0 → нет решений\n\n" +
+    "Формула корней:\n x = (-b ± √D) / 2a";
+  }
+
+  // БИОЛОГИЯ
+  if (topic === "bio") {
+    text =
+    "Фотосинтез — это процесс, при котором растения создают энергию.\n\n" +
+    "Происходит в листьях (в хлоропластах).\n\n" +
+    "Что нужно:\n- солнечный свет\n- вода\n- углекислый газ\n\n" +
+    "Что получается:\n- кислород\n- глюкоза (энергия)\n\n" +
+    "Формула:\nCO₂ + H₂O → O₂ + энергия";
+  }
+
+  // ИСТОРИЯ
+  if (topic === "history") {
+    text =
+    "История Казахстана (кратко):\n\n" +
+    "📌 Древние времена:\n" +
+    "- Кочевые племена\n- Развитие скотоводства\n\n" +
+    "📌 Средние века:\n" +
+    "- Образование ханств\n- Великий шелковый путь\n\n" +
+    "📌 1917 год:\n" +
+    "- Революция в Российской империи\n" +
+    "- Изменения власти\n\n" +
+    "📌 СССР период:\n" +
+    "- Казахстан в составе СССР\n" +
+    "- Развитие промышленности\n\n" +
+    "📌 1991 год:\n" +
+    "- Казахстан стал независимым государством\n\n" +
+    "📌 Сегодня:\n" +
+    "- Столица: Астана\n" +
+    "- Независимое государство";
+  }
+
+  // вывод текста
+  document.getElementById("output").innerText = text;
+}
+
+/* ===== ЗАПУСК ТЕСТА ===== */
+function startTest() {
+
+  let topic = document.getElementById("topic").value;
+
+  current = 0; // начинаем с 0
+  score = 0;   // обнуляем очки
+
+  // создаём вопросы
+  if (topic === "math") {
+    questions = [
+      {q:"Что такое квадратное уравнение?", a:"x²", exp:"Содержит x во второй степени"},
+      {q:"Формула дискриминанта?", a:"b²-4ac", exp:"Основная формула"},
+      {q:"Если D > 0?", a:"2", exp:"Два корня"},
+      {q:"Если D = 0?", a:"1", exp:"Один корень"},
+      {q:"Если D < 0?", a:"0", exp:"Нет решений"}
+    ];
+  }
+
+  if (topic === "bio") {
+    questions = [
+      {q:"Что такое фотосинтез?", a:"энерг", exp:"Получение энергии"},
+      {q:"Что нужно?", a:"свет", exp:"Солнечный свет"},
+      {q:"Что выделяется?", a:"кислород", exp:"O2"},
+      {q:"Где происходит?", a:"листья", exp:"В листьях"},
+      {q:"Что поглощается?", a:"углекислый", exp:"CO2"}
+    ];
+  }
+
+  if (topic === "history") {
+    questions = [
+      {q:"Когда независимость?", a:"1991", exp:"Казахстан стал независимым"},
+      {q:"Столица?", a:"астана", exp:"Главный город"},
+      {q:"1917?", a:"революция", exp:"Историческое событие"},
+      {q:"СССР?", a:"союз", exp:"Советский Союз"},
+      {q:"Тип хозяйства раньше?", a:"кочев", exp:"Кочевое"}
+    ];
+  }
+
+  showQuestion();
+}
+
+/* ===== ПОКАЗ ВОПРОСА ===== */
+function showQuestion() {
+
+  // если вопросы закончились
+  if (current >= questions.length) {
+    document.getElementById("output").innerHTML =
+      "✅ Тест завершён!<br>Результат: " + score + "/" + questions.length;
+    return;
+  }
+
+  let q = questions[current];
+
+  // вывод вопроса
+  document.getElementById("output").innerHTML =
+    `<div class="question">${q.q}</div>
+     <input id="answer">
+     <br>
+     <button onclick="checkAnswer()">Ответить</button>`;
+}
+
+/* ===== ПРОВЕРКА ОТВЕТА ===== */
+function checkAnswer() {
+
+  let user = document.getElementById("answer").value.toLowerCase();
+  let correct = questions[current].a;
+
+  // проверка (частичное совпадение)
+  if (user.includes(correct)) {
+    score++;
+    alert("✅ Правильно!");
+  } else {
+    alert("❌ Неправильно!\nОбъяснение: " + questions[current].exp);
+  }
+
+  current++; // следующий вопрос
+  showQuestion();
+}
+
+/* ===== ПЛАН ПОДГОТОВКИ ===== */
+/* ===== УМНЫЙ ПЛАН ПОДГОТОВКИ ===== */
+function makePlan() {
+
+  let days = parseInt(prompt("Сколько дней до экзамена?"));
+  let topic = document.getElementById("topic").value;
+
+  if (!days || days <= 0) {
+    alert("Введите правильное число дней");
+    return;
+  }
+
+  let plan = "📅 ПЛАН ПОДГОТОВКИ:\n\n";
+
+  for (let i = 1; i <= days; i++) {
+
+    plan += "🔹 День " + i + ":\n";
+
+    // первые дни — изучение
+    if (i <= days * 0.4) {
+      plan += "- 📘 Изучить теорию\n";
+      plan += "- ✍️ Сделать конспект\n";
+      plan += "- 🧠 Понять основные идеи\n";
+    }
+
+    // середина — практика
+    else if (i <= days * 0.8) {
+      plan += "- 📘 Повторить теорию\n";
+      plan += "- 📝 Решать задания\n";
+      plan += "- 🔁 Разобрать ошибки\n";
+    }
+
+    // последние дни — закрепление
+    else {
+      plan += "- 📝 Пройти полный тест\n";
+      plan += "- 🔥 Повторить сложные темы\n";
+      plan += "- 😴 Отдых и лёгкое повторение\n";
+    }
+
+    // каждые 3 дня — повторение
+    if (i % 3 === 0) {
+      plan += "- ♻️ Повторить всё пройденное\n";
+    }
+
+    plan += "\n";
+  }
+
+  plan += "💡 Совет: занимайся 30–60 минут в день для лучшего результата!";
+
+  document.getElementById("output").innerText = plan;
+}
+
+</script>
+
+</body>
+</html>
